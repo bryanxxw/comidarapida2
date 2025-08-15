@@ -1188,15 +1188,23 @@
       link.addEventListener('click', closeDropdown);
     });
 
-    // Evento para abrir/cerrar el menú en móviles
-document.getElementById("menuToggleBtn").addEventListener("click", function () {
+    document.getElementById("menuToggleBtn").addEventListener("click", function () {
   const navMenu = document.querySelector("nav ul");
   navMenu.classList.toggle("mostrar");
 
-  // Cambia el aria-expanded para accesibilidad
   const isExpanded = navMenu.classList.contains("mostrar");
   this.setAttribute("aria-expanded", isExpanded);
 });
+
+// Cerrar el menú al hacer clic en un enlace
+document.querySelectorAll("nav ul li a").forEach(link => {
+  link.addEventListener("click", () => {
+    const navMenu = document.querySelector("nav ul");
+    navMenu.classList.remove("mostrar");
+    document.getElementById("menuToggleBtn").setAttribute("aria-expanded", false);
+  });
+});
+
 
   })();
 </script>
