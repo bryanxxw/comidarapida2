@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Promoción y Pedidos</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fffaf5 0%, #ffe8d6 100%);
+      color: #333;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Animaciones globales */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+    
+    header {
+      background: linear-gradient(135deg, #ff0000 0%, #ff4444 100%);
+      padding: 2rem;
+      text-align: center;
+      color: white;
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: shimmer 3s infinite;
+    }
+    
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    header p {
+      margin: 0.5rem 0 0 0;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    nav {
+      background: linear-gradient(135deg, #ff7043 0%, #ff5722 100%);
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(255, 112, 67, 0.3);
+    }
+    
+    nav a {
+      margin: 0 1.5rem;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+    }
+    
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                  url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      padding: 150px 20px;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      opacity: 0.3;
+      animation: pulse 6s infinite;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(255,0,0,0.3), rgba(255,112,67,0.3));
+    }
+    
+    .hero h1 { 
+      font-size: 3.5rem; 
+      margin-bottom: 1rem; 
+      position: relative;
+      z-index: 1;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .hero p { 
+      font-size: 1.4rem; 
+      position: relative;
+      z-index: 1;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    
+    .section { 
+      padding: 4rem 2rem; 
+      text-align: center; 
+    }
+    
+    .section h2 {
+      font-size: 2.5rem;
+      color: #d84315;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    
+    .section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #ff0000, #ff7043);
+      border-radius: 2px;
+      animation: pulse 2s infinite;
+    }
+    
+    .menu { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      position: relative;
+      border: 1px solid rgba(255, 112, 67, 0.1);
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+    .card:nth-child(5) { animation-delay: 0.5s; }
+    .card:nth-child(6) { animation-delay: 0.6s; }
+    .card:nth-child(7) { animation-delay: 0.7s; }
+    .card:nth-child(8) { animation-delay: 0.8s; }
+    .card:nth-child(9) { animation-delay: 0.9s; }
+    .card:nth-child(10) { animation-delay: 1.0s; }
+    
+    .card:hover { 
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(255, 112, 67, 0.2);
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.5rem;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .card:hover::after {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ff0000, #ff7043);
+    }
+    
+    .card img { 
+      width: 100%; 
+      height: 220px; 
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    
+    .card:hover img {
+      transform: scale(1.1);
+    }
+    
+    .card-content {
+      padding: 1.5rem;
+    }
+    
+    .card h3 { 
+      margin: 0 0 1rem 0; 
+      color: #d84315;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    
+    .card p { 
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+    
+    .card-price {
+      background: linear-gradient(135deg, #ff0000, #ff7043);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-top: 1rem;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      animation: pulse 2s infinite;
+    }
+
+    .card-price::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    .card-price::after {
+      content: '';
+      position: absolute;
+      right: -5px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      animation: pulse 1s infinite;
+    }
+    
+    footer {
+      background: linear-gradient(135deg, #333 0%, #555 100%);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    
+    #pedidoModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+    
+    #pedidoModal .modal-content {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      width: 400px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: modalSlideIn 0.3s ease;
+    }
+    
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    #pedidoModal span {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #ff0000;
+      font-size: 1.5rem;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    
+    #pedidoModal span:hover {
+      background: #ff0000;
+      color: white;
+    }
+    
+    #pedidoModal h3 {
+      color: #d84315;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    
+    #pedidoModal label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    #pedidoModal input,
+    #pedidoModal textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+    
+    #pedidoModal input:focus,
+    #pedidoModal textarea:focus {
+      outline: none;
+      border-color: #ff7043;
+    }
+    
+    #pedidoModal button {
+      background: linear-gradient(135deg, #ff0000, #ff7043);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #pedidoModal button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    #pedidoModal button:hover::before {
+      left: 100%;
+    }
+    
+    #pedidoModal button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+    }
+
+    /* Modal de Transferencia */
+    #transferModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    #transferModal .modal-content {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 20px;
+      width: 420px;
+      max-width: 95vw;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    #transferModal span {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #ff0000;
+      font-size: 1.5rem;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    #transferModal span:hover { background: #ff0000; color: #fff; }
+
+    .transfer-card { background:#f8f9fa; border-radius:12px; padding:1rem; margin-bottom:1rem; }
+    .transfer-row { display:flex; justify-content:space-between; gap:0.75rem; margin:0.4rem 0; }
+    .transfer-label { color:#555; font-weight:600; }
+    .transfer-value { color:#222; font-weight:700; }
+    .transfer-actions { display:flex; gap:0.75rem; margin-top:1rem; }
+    .transfer-actions button { flex:1; border:none; border-radius:10px; padding:0.8rem 1rem; cursor:pointer; font-weight:600; transition:.2s; }
+    .btn-copy { background:#eeeeee; }
+    .btn-copy:hover { background:#e0e0e0; }
+    .btn-wa { background:#25D366; color:#fff; }
+    .btn-wa:hover { filter:brightness(0.95); }
+    .btn-cancel { background:#f44336; color:#fff; }
+    .btn-cancel:hover { filter:brightness(0.95); }
+    
+    @media (max-width: 768px) {
+      .menu { 
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 0.5rem;
+      }
+      .hero h1 { font-size: 2.5rem; }
+      .section h2 { font-size: 2rem; }
+      #pedidoModal .modal-content {
+        width: 90%;
+        margin: 1rem;
+      }
+
+      #transferModal .modal-content {
+        width: 95%;
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      
+      /* (sin estilos de pago) */
+      .section {
+        padding: 2rem 1rem;
+      }
+      .card {
+        margin: 0 auto;
+        max-width: 350px;
+      }
+      .card-content {
+        padding: 1rem;
+      }
+      .card h3 {
+        font-size: 1.2rem;
+      }
+      .card p {
+        font-size: 0.9rem;
+      }
+      .card-price {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+      .hero {
+        padding: 100px 15px;
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .hero p {
+        font-size: 1.1rem;
+      }
+      .section h2 {
+        font-size: 1.8rem;
+      }
+      .menu {
+        gap: 1rem;
+      }
+      .card img {
+        height: 180px;
+      }
+      .card-content {
+        padding: 0.8rem;
+      }
+      .card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+      .card p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
+      .card-price {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+        margin-top: 0.8rem;
+      }
+      #pedidoModal .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 0.5rem;
+      }
+      #pedidoModal h3 {
+        font-size: 1.3rem;
+      }
+      #pedidoModal input,
+      #pedidoModal textarea {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+      }
+      #pedidoModal button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+      }
+      nav a {
+        font-size: 1rem;
+        padding: 0.6rem 0.8rem;
+        margin: 0 0.5rem;
+      }
+      .menu-principal a {
+        padding: 0.6rem 1rem;
+      }
+      .dropdown-content {
+        min-width: 150px;
+      }
+      .dropdown-content a {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Estilos del menú de navegación */
+    nav {
+      background: linear-gradient(135deg, #ff0000 0%, #ff4444 100%);
+    padding: 0.7rem;
+  }
+
+  .menu-principal {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .menu-principal li {
+    position: relative;
+    margin: 0 1rem;
+  }
+
+  .menu-principal a {
+    color: white;
+    text-decoration: none;
+      font-weight: 600;
+      padding: 0.8rem 1.2rem;
+    display: block;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .menu-principal a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+  }
+
+    .dropdown { position: relative; }
+
+    .dropdown-content {
+      display: block; /* controlado por visibilidad para animación */
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 220px;
+      list-style: none;
+      margin: 0;
+      padding: 6px 0;
+      background: linear-gradient(135deg, #ff0000, #ff4444);
+      border-radius: 14px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+      z-index: 20;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+      pointer-events: none;
+    }
+
+    .dropdown.open .dropdown-content {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .dropdown-content li { margin: 0; }
+    .dropdown-content li + li { border-top: 1px solid rgba(255,255,255,0.12); }
+
+    .dropdown-content a {
+      padding: 0.8rem 1.2rem;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dropdown-content a:hover {
+      background: rgba(255, 255, 255, 0.1);
+  }
+
+    @media (hover: hover) {
+      .dropdown:hover .dropdown-content {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+        animation: dropdownSlide 0.25s ease;
+      }
+    }
+
+    @keyframes dropdownSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+  .menu-header {
+    display: flex;
+    justify-content: flex-end;
+      background: linear-gradient(135deg, #ff0000, #ff4444);
+    padding: 0.5rem 1rem;
+  }
+
+  .menu-toggle {
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .menu-toggle:hover {
+      background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Responsive para móviles */
+  @media (max-width: 600px) {
+      .menu-header {
+        padding: 0.3rem 0.5rem;
+      }
+      
+      .menu-toggle {
+        font-size: 1.5rem;
+        padding: 0.3rem;
+      }
+      
+    nav ul {
+      display: none;
+      flex-direction: column;
+      text-align: center;
+        background: linear-gradient(135deg, #ff0000, #ff4444);
+        border-radius: 10px;
+        margin: 0.5rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    nav ul.mostrar {
+      display: flex;
+        animation: slideDown 0.3s ease;
+      }
+
+      .menu-principal {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .menu-principal li {
+        margin: 0;
+        width: 100%;
+      }
+
+      .menu-principal a {
+        padding: 1rem;
+        border-radius: 0;
+        margin: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .dropdown-content {
+        position: static;
+        width: 100%;
+        min-width: 0;
+        border-radius: 10px;
+        margin: 0.5rem 0;
+        background: rgba(255,255,255,0.08);
+        box-shadow: none;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        pointer-events: auto;
+      }
+
+      .dropdown-content a {
+        padding: 0.8rem 2rem;
+        border-radius: 0;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .dropdown-content {
+        right: -50px;
+        min-width: 200px;
+      }
+    }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+</style>
+
+  <div class="menu-header">
+    <div class="menu-toggle" id="menuToggleBtn" aria-label="Abrir menú" aria-expanded="false">☰</div>
+
+    <nav id="mi menu">
+      <ul class="menu-principal">
+        <li class="dropdown" id="mainDropdown">
+          <a href="#" id="dropdownTrigger" aria-haspopup="true" aria-expanded="false">Menú</a>
+          <ul class="dropdown-content" role="menu">
+            <li role="none"><a role="menuitem" href="#inicio">Inicio</a></li>
+            <li role="none"><a role="menuitem" href="#menu">Menú</a></li>
+            <li role="none"><a role="menuitem" href="#promoción">Promoción</a></li>
+            <li role="none"><a role="menuitem" href="#contacto">Contacto</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</head>
+<body>
+
+<header>
+  <h1> PROMOCIÓN Y VENTA DE COMIDA RÁPIDA</h1>
+  <p>Promoción y pedidos online.</p>
+</header>
+
+<section class="hero" id="inicio">
+  <h1>¡Bienvenido!</h1>
+  <p>Disfruta auténtica comida en tu hogar</p>
+</section>
+
+<section class="section" id="menu">
+  <h2>🍽️ Menú Destacado</h2>
+  <div class="menu">
+    <div class="card" onclick="abrirFormulario('HAMBURGUESA DE POLLO')">
+      <img src="https://comedera.com/wp-content/uploads/sites/9/2023/07/Hamburguesa-de-pollo-picante.jpg" alt="Hamburguesa de pollo">
+      <div class="card-content">
+        <h3> HAMBURGUESA DE POLLO 🍗</h3>
+        <p>Hamburguesa de pollo criollo apanado en pan rallado con ingredientes frescos y sabores auténticos.</p>
+        <div class="card-price">$3.50</div>
+      </div>
+    </div>
+    
+    <div class="card" onclick="abrirFormulario('ALITAS A LA BBQ')">
+      <img src="https://www.unileverfoodsolutions.com.co/dam/global-ufs/mcos/NOLA/calcmenu/recipes/col-recipies/recetas-fruco-bbq/Alitas-BBQ-1200x709.jpg" alt="Alitas a la BBQ">
+      <div class="card-content">
+        <h3> ALITAS A LA BBQ 🍖</h3>
+        <p>Alitas de pollo bañadas en salsa BBQ casera con un toque especial de especias.</p>
+        <div class="card-price">$4.00</div>
+      </div>
+    </div>
+    
+    <div class="card" onclick="abrirFormulario('ALBÓNDIGAS DE CERDO')">
+      <img src="https://img.hellofresh.com/w_3840,q_auto,f_auto,c_fill,fl_lossy/hellofresh_website/es/cms/SEO/recipes/albondigas-caseras-de-cerdo-con-salsa-barbacoa.jpeg" alt="Albóndigas de cerdo">
+      <div class="card-content">
+        <h3> ALBÓNDIGAS DE CERDO 🥩</h3>
+        <p>Albóndigas caseras con salsa barbacoa, preparadas con carne de cerdo de la mejor calidad.</p>
+        <div class="card-price">$4.00</div>
+      </div>
+    </div>
+    
+    <div class="card" onclick="abrirFormulario('PAPAS FRITAS CRISPY')">
+      <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Papas fritas">
+      <div class="card-content">
+        <h3> PAPAS FRITAS CRISPY 🍟</h3>
+        <p>Papas fritas crujientes con sal marina y especias especiales, perfectas como acompañamiento.</p>
+        <div class="card-price">$1.99</div>
+      </div>
+    </div>
+    
+    <div class="card" onclick="abrirFormulario('ENSALADA CÉSAR')">
+      <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ensalada César">
+      <div class="card-content">
+        <h3> ENSALADA CÉSAR 🥗</h3>
+        <p>Ensalada fresca con lechuga romana, crutones, parmesano y aderezo César casero.</p>
+        <div class="card-price">$1.00</div>
+      </div>
+    </div>
+    
+    <div class="card" onclick="abrirFormulario('BEBIDA REFRESCANTE')">
+      <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Bebida">
+      <div class="card-content">
+        <h3> BEBIDA REFRESCANTE 🥤</h3>
+        <p>Bebidas naturales y refrescantes para acompañar tu comida favorita.</p>
+        <div class="card-price">$0.99</div>
+      </div>
+    </div>
+    
+    <div class="card" onclick="abrirFormulario('PIZZA ENTERA MARGHERITA')">
+      <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Pizza Margherita">
+      <div class="card-content">
+        <h3> PIZZA ENTERA MARGHERITA 🍕</h3>
+        <p>Pizza tradicional italiana con salsa de tomate, mozzarella fresca y albahaca aromática.</p>
+        <div class="card-price">$10.00</div>
+      </div>
+    </div>
+    
+    <div class="card" onclick="abrirFormulario('POLLO A LA PARRILLA')">
+      <img src="https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Pollo a la parrilla">
+      <div class="card-content">
+        <h3> POLLO A LA PARRILLA 🍗</h3>
+        <p>Pechuga de pollo a la parrilla con hierbas aromáticas y especias especiales.</p>
+        <div class="card-price">$11.99</div>
+      </div>
+    </div>
+    
+    <div class="card" onclick="abrirFormulario('SOPA DE POLLO')">
+      <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Sopa de pollo">
+      <div class="card-content">
+        <h3> SOPA DE POLLO 🍲</h3>
+        <p>Sopa casera de pollo con verduras frescas, fideos y hierbas aromáticas.</p>
+        <div class="card-price">$7.99</div>
+      </div>
+    </div>
+    
+    <div class="card" onclick="abrirFormulario('POSTRE DE CHOCOLATE')">
+      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Postre de chocolate">
+      <div class="card-content">
+        <h3> POSTRE DE CHOCOLATE 🍰</h3>
+        <p>Delicioso postre de chocolate con crema y frutas frescas de temporada.</p>
+        <div class="card-price">$6.99</div>
+      </div>
+    </div>
+  </div>
+</section>
+    
+<section class="section" id="promoción" style="cursor: pointer; background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-radius: 20px; margin: 2rem; box-shadow: 0 10px 30px rgba(255, 112, 67, 0.1); position: relative; overflow: hidden;">
+  <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,112,67,0.1) 0%, transparent 70%); animation: pulse 4s infinite;"></div>
+  <div style="position: relative; z-index: 1;">
+    <h2 style="animation: pulse 3s infinite;"> Promociones Especiales 🎉</h2>
+    <p style="font-size: 1.1rem; font-weight: 500;">¡Haz clic aquí para ver nuestras ofertas más recientes y ahorrar en tu pedido!</p>
+    <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">💥 ¡Ofertas limitadas! 💥</div>
+  </div>
+</section>
+
+<section class="section" id="contacto">
+  <h2>📞 Contáctanos</h2>
+  <p>📞 +593 9 9999 9999 &nbsp; | &nbsp; 📍 Babahoyo, Ecuador</p>
+  <p>Síguenos: @promocionyventadecomidarapida</p>
+</section>
+
+<footer>
+  <p>&copy; 2025 Sabores de todo gusto. Todos los derechos reservados.</p>
+</footer>
+
+<div id="pedidoModal">
+  <div class="modal-content">
+    <span onclick="cerrarFormulario()">×</span>
+    <h3 id="tituloComida">Pedir:</h3>
+    <form id="formularioPedido" onsubmit="procesarPedidoTransferencia(event)">
+      <input type="hidden" name="comida" id="comidaSeleccionada">
+      <label for="cantidad">Cantidad:</label>
+      <input type="number" id="cantidad" name="cantidad" min="1" required>
+      <label for="direccion">Dirección:</label>
+      <textarea id="direccion" name="direccion" rows="3" required placeholder="Ingresa tu dirección completa"></textarea>
+      <button type="submit"> Enviar pedido</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de Transferencia -->
+<div id="transferModal">
+  <div class="modal-content">
+    <span onclick="cerrarTransferencia()">×</span>
+    <h3 style="color:#d84315; margin-top:0;">💳 Pago por Transferencia</h3>
+
+    <div class="transfer-card">
+      <div class="transfer-row">
+        <div class="transfer-label">Banco</div>
+        <div class="transfer-value">Pichincha</div>
+      </div>
+      <div class="transfer-row">
+        <div class="transfer-label">Tipo de cuenta</div>
+        <div class="transfer-value">Ahorros</div>
+      </div>
+      <div class="transfer-row">
+        <div class="transfer-label">Número de cuenta</div>
+        <div class="transfer-value" id="cuentaBancaria">2233445566</div>
+      </div>
+      <div class="transfer-row">
+        <div class="transfer-label">Titular</div>
+        <div class="transfer-value">Cualquiera</div>
+      </div>
+      <div class="transfer-row">
+        <div class="transfer-label">Cédula/RUC</div>
+        <div class="transfer-value">Cualquiera</div>
+      </div>
+    </div>
+
+    <div class="transfer-card">
+      <div class="transfer-row">
+        <div class="transfer-label">Pedido</div>
+        <div class="transfer-value" id="tPedido"></div>
+      </div>
+      <div class="transfer-row">
+        <div class="transfer-label">Cantidad</div>
+        <div class="transfer-value" id="tCantidad"></div>
+      </div>
+      <div class="transfer-row">
+        <div class="transfer-label">Total</div>
+        <div class="transfer-value" id="tTotal"></div>
+      </div>
+      <div class="transfer-row">
+        <div class="transfer-label">ID Pedido</div>
+        <div class="transfer-value" id="tId"></div>
+      </div>
+    </div>
+
+    <div class="transfer-actions">
+      <button class="btn-copy" onclick="copiarTexto('#cuentaBancaria')">Copiar cuenta</button>
+      <button class="btn-copy" onclick="copiarMonto()">Copiar monto</button>
+    </div>
+    <div class="transfer-actions">
+      <button class="btn-wa" onclick="enviarWhatsAppComprobante()">Enviar comprobante por WhatsApp</button>
+      <button class="btn-cancel" onclick="cerrarTransferencia()">Cancelar</button>
+    </div>
+
+    <p style="margin-top:1rem; color:#666; font-size:0.95rem;">⏳ Reservamos tu pedido por 30 minutos mientras recibimos el comprobante.</p>
+  </div>
+  
+</div>
+
+ 
+
+<script>
+  // Precios simples según los nombres visibles en las tarjetas
+  const PRECIOS = {
+    'HAMBURGUESA DE POLLO': 3.50,
+    'ALITAS A LA BBQ': 4.00,
+    'ALBÓNDIGAS DE CERDO': 4.00,
+    'PAPAS FRITAS CRISPY': 1.99,
+    'ENSALADA CÉSAR': 1.00,
+    'BEBIDA REFRESCANTE': 0.99,
+    'PIZZA ENTERA MARGHERITA': 10.00,
+    'POLLO A LA PARRILLA': 11.99,
+    'SOPA DE POLLO': 7.99,
+    'POSTRE DE CHOCOLATE': 6.99
+  };
+
+  let pedidoTransfer = null;
+
+  function abrirFormulario(nombreComida) {
+    document.getElementById('tituloComida').textContent = 'Pedir: ' + nombreComida;
+    document.getElementById('comidaSeleccionada').value = nombreComida;
+    document.getElementById('pedidoModal').style.display = 'flex';
+  }
+  
+  function cerrarFormulario() {
+    document.getElementById('pedidoModal').style.display = 'none';
+  }
+  
+  
+  document.getElementById("promoción").addEventListener("click", function () {
+    window.location.href = "promocion.html";
+  });
+
+  function toggleMenu() {
+    document.querySelector("nav ul").classList.toggle("mostrar");
+  }
+
+  // Cerrar modal al hacer clic fuera de él
+  document.getElementById('pedidoModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      cerrarFormulario();
+    }
+  });
+
+  function procesarPedidoTransferencia(e){
+    e.preventDefault();
+    const producto = document.getElementById('comidaSeleccionada').value;
+    const cantidad = parseInt(document.getElementById('cantidad').value || '1', 10);
+    const direccion = document.getElementById('direccion').value.trim();
+    if(!producto || !PRECIOS[producto]){ alert('Producto inválido'); return; }
+    if(!cantidad || cantidad < 1){ alert('Cantidad inválida'); return; }
+    if(direccion.length < 10){ alert('Ingresa una dirección completa'); return; }
+    const total = (PRECIOS[producto] * cantidad);
+    const orderId = 'PED-' + Date.now().toString().slice(-8);
+    pedidoTransfer = { producto, cantidad, direccion, total, orderId };
+    // Llenar modal
+    document.getElementById('tPedido').textContent = producto;
+    document.getElementById('tCantidad').textContent = cantidad + ' und';
+    document.getElementById('tTotal').textContent = '$' + total.toFixed(2);
+    document.getElementById('tId').textContent = orderId;
+    // Abrir modal transferencia y cerrar formulario
+    document.getElementById('transferModal').style.display = 'flex';
+    cerrarFormulario();
+  }
+
+  function abrirTransferenciaManual(){
+    // Si ya existe pedidoTransfer, solo abrimos el modal
+    const producto = document.getElementById('comidaSeleccionada').value;
+    const cantidad = parseInt(document.getElementById('cantidad').value || '1', 10);
+    const direccion = document.getElementById('direccion').value.trim();
+    if(!producto){ alert('Primero selecciona un producto haciendo clic en una tarjeta.'); return; }
+    if(!PRECIOS[producto]){ alert('Producto inválido'); return; }
+    if(!cantidad || cantidad < 1){ alert('Cantidad inválida'); return; }
+    if(direccion.length < 10){ alert('Ingresa una dirección completa'); return; }
+    const total = (PRECIOS[producto] * cantidad);
+    const orderId = 'PED-' + Date.now().toString().slice(-8);
+    pedidoTransfer = { producto, cantidad, direccion, total, orderId };
+    document.getElementById('tPedido').textContent = producto;
+    document.getElementById('tCantidad').textContent = cantidad + ' und';
+    document.getElementById('tTotal').textContent = '$' + total.toFixed(2);
+    document.getElementById('tId').textContent = orderId;
+    document.getElementById('transferModal').style.display = 'flex';
+  }
+
+  function cerrarTransferencia(){
+    document.getElementById('transferModal').style.display = 'none';
+  }
+
+  document.getElementById('transferModal').addEventListener('click', function(e){
+    if(e.target === this){ cerrarTransferencia(); }
+  });
+
+  function copiarTexto(selector){
+    const el = document.querySelector(selector);
+    if(!el) return;
+    navigator.clipboard.writeText(el.textContent.trim());
+    alert('Copiado al portapapeles');
+  }
+
+  function copiarMonto(){
+    if(!pedidoTransfer) return;
+    navigator.clipboard.writeText(pedidoTransfer.total.toFixed(2));
+    alert('Monto copiado');
+  }
+
+  function enviarWhatsAppComprobante(){
+    if(!pedidoTransfer) return;
+    const tel = '593999999999'; // Cambia por tu WhatsApp
+    const msg = `Hola, envío comprobante de transferencia.\n\n`+
+      `Pedido: ${pedidoTransfer.producto} x${pedidoTransfer.cantidad}\n`+
+      `Total: $${pedidoTransfer.total.toFixed(2)}\n`+
+      `ID: ${pedidoTransfer.orderId}\n`+
+      `Dirección: ${pedidoTransfer.direccion}\n`+
+      `Banco: Pichincha | Ahorros 2233445566`;
+    const url = `https://wa.me/${tel}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+
+  
+  function redirigirGracias() {
+    setTimeout(function() {
+      window.location.href = 'gracias.html';
+    }, 500);
+  }
+
+  // Dropdown: abrir/cerrar con clic y cerrar al hacer clic fuera
+  (function() {
+    var dropdown = document.getElementById('mainDropdown');
+    var trigger = document.getElementById('dropdownTrigger');
+    if (!dropdown || !trigger) return;
+
+    function closeDropdown() {
+      dropdown.classList.remove('open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      var isOpen = dropdown.classList.toggle('open');
+      trigger.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!dropdown.contains(e.target)) {
+        closeDropdown();
+      }
+    });
+
+    // Cerrar el dropdown al elegir una opción
+    dropdown.querySelectorAll('.dropdown-content a').forEach(function(link) {
+      link.addEventListener('click', closeDropdown);
+    });
+  })();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nuevos Sabores - Comida Rápida</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Animaciones */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Header */
+    .hero-header {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+      color: white;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      opacity: 0.3;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: pulse 3s infinite;
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+    }
+
+    .cta-button {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      padding: 1rem 2.5rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(76, 175, 80, 0.4);
+    }
+
+    /* Navigation */
+    .nav-bar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ff6b6b;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ff6b6b;
+    }
+
+    /* Features Section */
+    .features {
+      padding: 5rem 2rem;
+      background: white;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 2rem;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .feature-card:nth-child(1) { animation-delay: 0.1s; }
+    .feature-card:nth-child(2) { animation-delay: 0.2s; }
+    .feature-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .feature-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .feature-description {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* Menu Section */
+    .menu-section {
+      padding: 5rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      animation: slideInLeft 1s ease-out;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .menu-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      animation: fadeInUp 0.8s ease-out;
+      cursor: pointer;
+    }
+
+    .menu-card:nth-child(1) { animation-delay: 0.1s; }
+    .menu-card:nth-child(2) { animation-delay: 0.2s; }
+    .menu-card:nth-child(3) { animation-delay: 0.3s; }
+    .menu-card:nth-child(4) { animation-delay: 0.4s; }
+    .menu-card:nth-child(5) { animation-delay: 0.5s; }
+    .menu-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .menu-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    }
+
+    .menu-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-card:hover .menu-image {
+      transform: scale(1.1);
+    }
+
+    .menu-content {
+      padding: 1.5rem;
+      color: #333;
+    }
+
+    .menu-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #ff6b6b;
+    }
+
+    .menu-description {
+      color: #666;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .menu-price {
+      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-weight: 600;
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+
+    .new-badge {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      animation: pulse 2s infinite;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      padding: 5rem 2rem;
+      background: white;
+      text-align: center;
+    }
+
+    .contact-info {
+      max-width: 800px;
+      margin: 0 auto;
+      animation: slideInRight 1s ease-out;
+    }
+
+    .contact-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    .contact-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    
+    
+
+    .contact-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #ff6b6b;
+    }
+
+    /* Footer */
+    .footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      width: 400px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: fadeInUp 0.3s ease;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #ff6b6b;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      background: #ff6b6b;
+      color: white;
+    }
+
+    .modal-title {
+      color: #333;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #ff6b6b;
+    }
+
+    .form-button {
+      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .form-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+    }
+
+    /* Back Button */
+    .back-button {
+      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 2rem auto;
+      display: block;
+      text-decoration: none;
+      text-align: center;
+      max-width: 200px;
+    }
+
+    .back-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .contact-details {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .modal-content {
+        width: 90%;
+        margin: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+
+<!-- Navigation -->
+<nav class="nav-bar">
+  <div class="nav-content">
+    <div class="logo"> Sabores Nuevos</div>
+    
+  </div>
+</nav>
+
+
+
+
+
+
+
+<!-- Hero Section -->
+<section class="hero-header" id="inicio">
+  <div class="hero-content">
+    <h1 class="hero-title">🆕 Nuevos Sabores</h1>
+    <p class="hero-subtitle">Descubre nuestras increíbles nuevas creaciones culinarias</p>
+    <a href="#menu" class="cta-button">Ver Menú Nuevo</a>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🚀</span>
+      <h3 class="feature-title">Lanzamientos Semanales</h3>
+      <p class="feature-description">Cada semana traemos nuevos sabores innovadores para sorprender tu paladar.</p>
+    </div>
+    
+    <div class="feature-card">
+      <span class="feature-icon">⭐</span>
+      <h3 class="feature-title">Calidad Premium</h3>
+      <p class="feature-description">Ingredientes frescos y de la mejor calidad para garantizar el mejor sabor.</p>
+    </div>
+    
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <h3 class="feature-title">Entrega Rápida</h3>
+      <p class="feature-description">Tu pedido en la puerta de tu casa en menos de 30 minutos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Menu Section -->
+<section class="menu-section" id="menu">
+  <h2 class="section-title">✨ Nuevos Lanzamientos</h2>
+  <div class="menu-grid">
+    <div class="menu-card" onclick="abrirModal('Hamburguesas')">
+      <div class="new-badge">NUEVO</div>
+      <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=80" alt="Hamburguesas" class="menu-image" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://picsum.photos/seed/hamburguesa/1200/800';">
+      <div class="menu-content">
+        <h3 class="menu-title">Hamburguesas 🍔</h3>
+        <p class="menu-description">Clásicas y jugosas, con ingredientes frescos.</p>
+        <div class="menu-price">$3.50</div>
+      </div>
+    </div>
+
+    <div class="menu-card" onclick="abrirModal('Perros calientes')">
+      <div class="new-badge">NUEVO</div>
+      <img src="https://i.ytimg.com/vi/ufvylihzVak/sddefault.jpg" alt="Perros calientes" class="menu-image" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://picsum.photos/seed/perrocaliente/1200/800';">
+      <div class="menu-content">
+        <h3 class="menu-title">Perros calientes 🌭</h3>
+        <p class="menu-description">Pan suave y salchicha con tus aderezos favoritos.</p>
+        <div class="menu-price">$2.50</div>
+      </div>
+    </div>
+
+    <div class="menu-card" onclick="abrirModal('Empanadas')">
+      <div class="new-badge">NUEVO</div>
+      <img src="https://yayaya.com.ec/wp-content/uploads/2021/07/empanadas_de_viento.jpg" alt="Empanadas" class="menu-image" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://picsum.photos/seed/empanadas/1200/800';">
+      <div class="menu-content">
+        <h3 class="menu-title">Empanadas 🥟</h3>
+        <p class="menu-description">Rellenos variados, crujientes por fuera y suaves por dentro.</p>
+        <div class="menu-price">$1.00</div>
+      </div>
+    </div>
+
+    <div class="menu-card" onclick="abrirModal('Ceviche')">
+      <div class="new-badge">NUEVO</div>
+      <img src="https://i.ytimg.com/vi/JMC3dYqe9zs/maxresdefault.jpg" alt="Ceviche" class="menu-image" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://picsum.photos/seed/ceviche/1200/800';">
+      <div class="menu-content">
+        <h3 class="menu-title">Ceviche 🐟</h3>
+        <p class="menu-description">Fresco y cítrico, preparado al estilo de la casa.</p>
+        <div class="menu-price">$1.00</div>
+      </div>
+    </div>
+
+    <div class="menu-card" onclick="abrirModal('Bolón')">
+      <div class="new-badge">NUEVO</div>
+      <img src="https://i0.wp.com/recetaskwa.com/wp-content/uploads/2024/10/Miniatura-Bolon-Mixto-FB.jpeg?resize=1024%2C1024&ssl=1" alt="Bolón" class="menu-image" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://picsum.photos/seed/bolon/1200/800';">
+      <div class="menu-content">
+        <h3 class="menu-title">Bolón 🍽️</h3>
+        <p class="menu-description">De verde, con queso o chicharrón, al gusto.</p>
+        <div class="menu-price">$2.50</div>
+      </div>
+    </div>
+
+    <div class="menu-card" onclick="abrirModal('Encebollado')">
+      <div class="new-badge">NUEVO</div>
+      <img src="https://www.cocina-ecuatoriana.com/base/stock/Recipe/encebollado-manaba/encebollado-manaba_web.jpg.webp" alt="Encebollado" class="menu-image" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://picsum.photos/seed/encebollado/1200/800';">
+      <div class="menu-content">
+        <h3 class="menu-title">Encebollado 🧅</h3>
+        <p class="menu-description">Caldito tradicional con atún y cebolla curtida.</p>
+        <div class="menu-price">$3.50</div>
+      </div>
+    </div>
+
+    <div class="menu-card" onclick="abrirModal('Corviches')">
+      <div class="new-badge">NUEVO</div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Corviche_de_pescado.jpg" alt="Corviches" class="menu-image" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://picsum.photos/seed/corviche/1200/800';">
+      <div class="menu-content">
+        <h3 class="menu-title">Corviches 🥯</h3>
+        <p class="menu-description">De verde rellenos, crujientes y sabrosos.</p>
+        <div class="menu-price">$1.50</div>
+      </div>
+    </div>
+
+    <div class="menu-card" onclick="abrirModal('Salchipapas')">
+      <div class="new-badge">NUEVO</div>
+      <img src="https://imagenes.extra.ec/files/image_1200_675/uploads/2021/11/25/619fd282b200f.jpeg" alt="Salchipapas" class="menu-image" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://picsum.photos/seed/salchipapas/1200/800';">
+      <div class="menu-content">
+        <h3 class="menu-title">Salchipapas 🍟</h3>
+        <p class="menu-description">Clásicas papas con salchichas y salsas.</p>
+        <div class="menu-price">$2.50</div>
+      </div>
+    </div>
+
+    <div class="menu-card" onclick="abrirModal('Patacones con queso')">
+      <div class="new-badge">NUEVO</div>
+      <img src="https://www.bonella.com.ec/-/media/Project/Upfield/Brands/Rama/Rama-EC/Assets/Recipes/sync-img/c2e199e0-4eee-48eb-a3c3-89fd0eef0459.jpg?rev=063d9b5f42a644508fa6de053a3e010d&w=900" alt="Patacones" class="menu-image" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://picsum.photos/seed/patacones/1200/800';">
+      <div class="menu-content">
+        <h3 class="menu-title">Patacones 🍌</h3>
+        <p class="menu-description">De plátano verde, crocantes y dorados con queso.</p>
+        <div class="menu-price">$2.00</div>
+      </div>
+    </div>
+
+    <div class="menu-card" onclick="abrirModal('Tostadas')">
+      <div class="new-badge">NUEVO</div>
+      <img src="https://www.lilyannfouts.com/wp-content/uploads/2015/05/tostada.jpg" alt="Tostadas" class="menu-image" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://picsum.photos/seed/tostadas/1200/800';">
+      <div class="menu-content">
+        <h3 class="menu-title">Tostadas 🍞</h3>
+        <p class="menu-description">Crujientes, perfectas para acompañar.</p>
+        <div class="menu-price">$1.50</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section" id="contacto">
+  <div class="contact-info">
+    <h2 class="contact-title">📞 Contáctanos</h2>
+    <div class="contact-details">
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <h3>Teléfono</h3>
+        <p>+593 9 9999 9999</p>
+      </div>
+      
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <h3>Ubicación</h3>
+        <p>Babahoyo, Ecuador</p>
+      </div>
+      
+      
+</section>
+
+<!-- Back Button -->
+<a href="index.html" class="back-button">← Volver al Menú Principal</a>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>&copy; 2025 Sabores Nuevos. Todos los derechos reservados.</p>
+</footer>
+
+<!-- Modal -->
+<div class="modal" id="pedidoModal">
+  <div class="modal-content">
+    <div class="modal-close" onclick="cerrarModal()">×</div>
+    <h3 class="modal-title" id="modalTitle">Pedir:</h3>
+    <form id="formularioPedido" action="https://formspree.io/f/manbodjy" method="POST" onsubmit="enviarPedido()">
+      <input type="hidden" name="comida" id="comidaSeleccionada">
+      
+      <div class="form-group">
+        <label for="cantidad" class="form-label">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" min="1" required class="form-input">
+      </div>
+      
+      <div class="form-group">
+        <label for="direccion" class="form-label">Dirección:</label>
+        <textarea id="direccion" name="direccion" rows="3" required placeholder="Ingresa tu dirección completa" class="form-input"></textarea>
+      </div>
+      
+      <button type="submit" class="form-button">Enviar Pedido</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function abrirModal(nombreComida) {
+    document.getElementById('modalTitle').textContent = 'Pedir: ' + nombreComida;
+    document.getElementById('comidaSeleccionada').value = nombreComida;
+    document.getElementById('pedidoModal').style.display = 'flex';
+  }
+  
+  function cerrarModal() {
+    document.getElementById('pedidoModal').style.display = 'none';
+  }
+  
+  function enviarPedido() {
+    setTimeout(function() {
+      alert('¡Pedido enviado con éxito! Te contactaremos pronto.');
+      cerrarModal();
+    }, 1000);
+  }
+
+  // Cerrar modal al hacer clic fuera de él
+  document.getElementById('pedidoModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      cerrarModal();
+    }
+  });
+
+  // Smooth scrolling para los enlaces
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>
