@@ -1142,7 +1142,7 @@
 
   function enviarWhatsAppComprobante(){
     if(!pedidoTransfer) return;
-    const tel = '593993068863'; 
+    const tel = '+593993068863'; 
     const msg = `Hola, envío comprobante de transferencia.\n\n`+
       `Pedido: ${pedidoTransfer.producto} x${pedidoTransfer.cantidad}\n`+
       `Total: $${pedidoTransfer.total.toFixed(2)}\n`+
