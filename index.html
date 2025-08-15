@@ -1187,6 +1187,17 @@
     dropdown.querySelectorAll('.dropdown-content a').forEach(function(link) {
       link.addEventListener('click', closeDropdown);
     });
+
+    // Evento para abrir/cerrar el menú en móviles
+document.getElementById("menuToggleBtn").addEventListener("click", function () {
+  const navMenu = document.querySelector("nav ul");
+  navMenu.classList.toggle("mostrar");
+
+  // Cambia el aria-expanded para accesibilidad
+  const isExpanded = navMenu.classList.contains("mostrar");
+  this.setAttribute("aria-expanded", isExpanded);
+});
+
   })();
 </script>
 </body>
